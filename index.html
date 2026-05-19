@@ -499,31 +499,37 @@
             maxNativeZoom: 20
         });
         layer_GoogleLabels_1;
-        // Google Satellite
+        // Esri World Imagery (Satellite) — works from any domain including GitHub Pages
         map.createPane('pane_GoogleSatellite');
         map.getPane('pane_GoogleSatellite').style.zIndex = 400;
-        var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+        var layer_GoogleSatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             pane: 'pane_GoogleSatellite',
             opacity: 1.0,
-            attribution: '&copy; <a href="https://www.google.com/maps">Google Maps</a>',
-            minZoom: 1, maxZoom: 28, minNativeZoom: 0, maxNativeZoom: 20
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+            minZoom: 1, maxZoom: 28, minNativeZoom: 0, maxNativeZoom: 18
         });
-        // Google Hybrid (satellite + road labels — latest imagery)
+        // Esri Hybrid (Satellite + Place Labels — latest imagery)
         map.createPane('pane_GoogleHybrid');
         map.getPane('pane_GoogleHybrid').style.zIndex = 400;
-        var layer_GoogleHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
-            pane: 'pane_GoogleHybrid',
-            opacity: 1.0,
-            attribution: '&copy; <a href="https://www.google.com/maps">Google Maps</a>',
-            minZoom: 1, maxZoom: 28, minNativeZoom: 0, maxNativeZoom: 20
-        });
-        // Google Road Maps
+        map.createPane('pane_GoogleHybridLabels');
+        map.getPane('pane_GoogleHybridLabels').style.zIndex = 401;
+        var layer_GoogleHybrid = L.layerGroup([
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                pane: 'pane_GoogleHybrid',
+                minZoom: 1, maxZoom: 28, minNativeZoom: 0, maxNativeZoom: 18
+            }),
+            L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+                pane: 'pane_GoogleHybridLabels',
+                minZoom: 1, maxZoom: 28, minNativeZoom: 0, maxNativeZoom: 18
+            })
+        ]);
+        // Esri World Street Map
         map.createPane('pane_GoogleRoads');
         map.getPane('pane_GoogleRoads').style.zIndex = 400;
-        var layer_GoogleRoads = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        var layer_GoogleRoads = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
             pane: 'pane_GoogleRoads',
             opacity: 1.0,
-            attribution: '&copy; <a href="https://www.google.com/maps">Google Maps</a>',
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
             minZoom: 1, maxZoom: 28, minNativeZoom: 0, maxNativeZoom: 20
         });
         // CartoDB Positron (light)
@@ -8768,9 +8774,9 @@
             ]
         var baseTree = [
             {label: 'OpenStreetMap', layer: layer_OSMStandard_0},
-            {label: 'Google Satellite', layer: layer_GoogleSatellite},
-            {label: 'Google Hybrid (Latest)', layer: layer_GoogleHybrid},
-            {label: 'Google Road Maps', layer: layer_GoogleRoads},
+            {label: 'Satellite Imagery', layer: layer_GoogleSatellite},
+            {label: 'Hybrid (Satellite + Labels)', layer: layer_GoogleHybrid},
+            {label: 'Street Map', layer: layer_GoogleRoads},
             {label: 'CartoDB Light', layer: layer_CartoLight},
             {label: 'CartoDB Dark', layer: layer_CartoDark},
         ];
