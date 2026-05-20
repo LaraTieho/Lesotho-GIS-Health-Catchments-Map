@@ -298,6 +298,8 @@
                 this._div.setAttribute('role', 'button');
                 this._div.setAttribute('tabindex', '0');
                 this._isOpen = false;
+                L.DomEvent.disableScrollPropagation(this._div);
+                L.DomEvent.on(this._div, 'touchstart', L.DomEvent.stopPropagation);
                 L.DomEvent.on(this._div, 'click', function(e) {
                     L.DomEvent.stopPropagation(e);
                     if (abstract._isOpen) { abstract.hide(); } else { abstract.show(); }

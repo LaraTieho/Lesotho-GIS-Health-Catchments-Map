@@ -85,6 +85,9 @@ html, body, #map { overflow: hidden; }
     max-width: 380px;
     max-height: 55vh;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior: contain;
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 180, 216, 0.4) transparent;
     border-top: 2px solid #00B4D8;
