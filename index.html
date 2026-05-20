@@ -71,7 +71,7 @@
         <!-- User guide panel -->
         <div id="help-panel" role="dialog" aria-labelledby="help-panel-title" aria-modal="true">
             <div id="help-panel-header">
-                <h1 id="help-panel-title">User guide</h1>
+                <h1 id="help-panel-title">User Guide</h1>
                 <button id="help-panel-close" onclick="document.getElementById('help-panel').classList.remove('open')" aria-label="Close user guide">&#215;</button>
             </div>
             <div id="help-panel-body">
@@ -96,7 +96,7 @@
                 <p>Use the search box at the top left of the map to find Villages, Health Facilities, and Districts in this map database. Type at least two characters and a list of matching results will appear, each labelled with its type. Click a result to fly the map to that location.</p>
 
                 <h2>About this dataset</h2>
-                <p>The <kbd>i</kbd> button at the bottom left shows a full description of the dataset: its sources, validation process, and intended use. Hover over it to expand the text.</p>
+                <p>The <kbd>i</kbd> button at the bottom left shows a full description of the dataset: its sources, validation process, and intended use. Click it to open the information panel. Click the <kbd>&#215;</kbd> button inside the panel, or click the <kbd>i</kbd> button again, to close it.</p>
 
                 <div class="tip">This dataset is for operational planning and analysis. It is not a legal boundary dataset. Always use it alongside the latest approved version and change log.</div>
             </div>
@@ -295,20 +295,33 @@
             this._div = L.DomUtil.create('div',
             'leaflet-control abstract');
             this._div.id = 'abstract'
-                this._div.setAttribute("onmouseenter", "abstract.show()");
-                this._div.setAttribute("onmouseleave", "abstract.hide()");
+                this._div.setAttribute('role', 'button');
+                this._div.setAttribute('tabindex', '0');
+                this._isOpen = false;
+                L.DomEvent.on(this._div, 'click', function(e) {
+                    L.DomEvent.stopPropagation(e);
+                    if (abstract._isOpen) { abstract.hide(); } else { abstract.show(); }
+                });
+                L.DomEvent.on(this._div, 'keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        L.DomEvent.stopPropagation(e);
+                        if (abstract._isOpen) { abstract.hide(); } else { abstract.show(); }
+                    }
+                });
                 this.hide();
                 return this._div;
             };
             abstract.hide = function () {
+                this._isOpen = false;
                 this._div.classList.remove("abstractUncollapsed");
                 this._div.classList.add("abstract");
                 this._div.innerHTML = 'i'
             }
             abstract.show = function () {
+                this._isOpen = true;
                 this._div.classList.remove("abstract");
                 this._div.classList.add("abstractUncollapsed");
-                this._div.innerHTML = 'This GeoPackage forms part of the Lesotho Catchments Mapping WebGIS and contains authoritative geospatial layers used to support primary health care planning, EPI microplanning, service access analysis, and district-level decision-making. The package includes villages, schools, roads, settlement extents, and health facility catchments compiled from HMIS-collected data and official institutional sources, harmonized through technical review, validation, and quality assurance processes. <br /><br />Village data was compiled from HMIS and official records from the Lesotho Survey and Physical Planning department within the Ministry of Local Government, Chieftainship, Home Affairs and Police. School data was compiled from HMIS and official records from the Ministry of Education and Training. Road data was compiled from HMIS and official records from the Roads Directorate within the Ministry of Public Works and Transport. Settlement extents were referenced from GRID3 Lesotho Settlement Extents Version 02. Health facility catchments were geospatially developed during the national mapping initiative with technical support and validation.<br /><br />The dataset is intended for operational planning, mapping, monitoring, and analysis, and should be used together with the latest approved version, metadata, and change log. It is not a legal boundary dataset.<br /><br />Credits<br />Ministry of Health, Lesotho – HMIS Unit; District Health Management Teams; health facilities staff; Ministry of Local Government, Chieftainship, Home Affairs and Police – Survey and Physical Planning Department; Ministry of Education and Training; Roads Directorate, Ministry of Public Works and Transport; GRID3 for Lesotho Settlement Extents Version 02; technical support from GDI Advisors; funding support from Gavi, the Vaccine Alliance.<br /><br /><br />';
+                this._div.innerHTML = '<div class="abstract-header"><span class="abstract-title">Dataset Information</span><button class="abstract-close" onclick="event.stopPropagation(); abstract.hide();" aria-label="Close information">&#215;</button></div><div class="abstract-body">This GeoPackage forms part of the Lesotho Catchments Mapping WebGIS and contains authoritative geospatial layers used to support primary health care planning, EPI microplanning, service access analysis, and district-level decision-making. The package includes villages, schools, roads, settlement extents, and health facility catchments compiled from HMIS-collected data and official institutional sources, harmonized through technical review, validation, and quality assurance processes. <br /><br />Village data was compiled from HMIS and official records from the Lesotho Survey and Physical Planning department within the Ministry of Local Government, Chieftainship, Home Affairs and Police. School data was compiled from HMIS and official records from the Ministry of Education and Training. Road data was compiled from HMIS and official records from the Roads Directorate within the Ministry of Public Works and Transport. Settlement extents were referenced from GRID3 Lesotho Settlement Extents Version 02. Health facility catchments were geospatially developed during the national mapping initiative with technical support and validation.<br /><br />The dataset is intended for operational planning, mapping, monitoring, and analysis, and should be used together with the latest approved version, metadata, and change log. It is not a legal boundary dataset.<br /><br />Credits<br />Ministry of Health, Lesotho – HMIS Unit; District Health Management Teams; health facilities staff; Ministry of Local Government, Chieftainship, Home Affairs and Police – Survey and Physical Planning Department; Ministry of Education and Training; Roads Directorate, Ministry of Public Works and Transport; GRID3 for Lesotho Settlement Extents Version 02; technical support from GDI Advisors; funding support from Gavi, the Vaccine Alliance.<br /><br /><br /></div>';
         };
         abstract.addTo(map);
         var helpControl = new L.Control({'position':'bottomleft'});

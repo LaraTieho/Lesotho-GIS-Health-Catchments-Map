@@ -69,7 +69,7 @@ html, body, #map { overflow: hidden; }
     transform: scale(1.06);
 }
 .abstractUncollapsed {
-    padding: 15px 17px;
+    padding: 0;
     font-family: 'Inter', Arial, sans-serif;
     font-size: 11.5px;
     line-height: 1.75;
@@ -83,7 +83,62 @@ html, body, #map { overflow: hidden; }
         0 0 0 1px rgba(255, 255, 255, 0.05);
     border-radius: 10px;
     max-width: 380px;
+    max-height: 55vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 180, 216, 0.4) transparent;
     border-top: 2px solid #00B4D8;
+}
+.abstractUncollapsed::-webkit-scrollbar       { width: 4px; }
+.abstractUncollapsed::-webkit-scrollbar-track { background: transparent; }
+.abstractUncollapsed::-webkit-scrollbar-thumb { background: rgba(0, 180, 216, 0.4); border-radius: 2px; }
+@media (max-height: 500px) {
+    .abstractUncollapsed { max-height: 40vh; }
+}
+@media (max-width: 480px) {
+    .abstractUncollapsed { max-width: 88vw; }
+}
+.abstract-header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 17px 10px;
+    background: rgba(10, 27, 50, 0.97);
+    border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+    border-radius: 10px 10px 0 0;
+    z-index: 1;
+}
+.abstract-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #c8dce8;
+    letter-spacing: -0.01em;
+}
+.abstract-title::before {
+    content: 'i';
+    color: #00B4D8;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 7px;
+}
+.abstract-close {
+    background: none;
+    border: none;
+    color: #00B4D8;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 0 0 0 10px;
+    line-height: 1;
+    opacity: 0.8;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.abstract-close:hover { opacity: 1; transform: scale(1.15); }
+.abstract-body {
+    padding: 12px 17px 15px;
 }
 
 /* ── Global Leaflet Controls ──────────────────────────── */
@@ -221,7 +276,7 @@ html, body, #map { overflow: hidden; }
     max-width: 70vw;
     font-family: 'Inter', Arial, sans-serif;
     color: #d8eaf2;
-    margin: 14px 16px;
+    margin: 14px 34px 14px 16px;
 }
 .leaflet-popup-content.media {
     width: auto !important;
@@ -387,11 +442,12 @@ html, body, #map { overflow: hidden; }
     letter-spacing: -0.02em;
 }
 #help-panel-header h1::before {
-    content: '? ';
+    content: '?';
     color: #00B4D8;
     font-family: 'Inter', Arial, sans-serif;
     font-size: 13px;
     font-weight: 700;
+    margin-right: 7px;
 }
 #help-panel-close {
     background: none;
